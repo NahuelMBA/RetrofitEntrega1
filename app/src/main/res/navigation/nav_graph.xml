@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/inicioFragment">
+
+    <fragment android:id="@+id/inicioFragment" android:name="com.example.retrofit_entrega1.InicioFragment" />
+    <fragment android:id="@+id/perfilFragment" android:name="com.example.retrofit_entrega1.PerfilFragment" />
+    <fragment android:id="@+id/inmueblesFragment" android:name="com.example.retrofit_entrega1.InmueblesFragment" />
+    <fragment android:id="@+id/inquilinosFragment" android:name="com.example.retrofit_entrega1.InquilinosFragment" />
+    <fragment android:id="@+id/contratosFragment" android:name="com.example.retrofit_entrega1.ContratosFragment" />
+    <fragment android:id="@+id/logoutFragment" android:name="com.example.retrofit_entrega1.LogoutFragment" />
+</navigation>
