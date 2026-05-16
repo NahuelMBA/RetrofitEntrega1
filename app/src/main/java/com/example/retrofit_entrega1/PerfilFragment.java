@@ -1,64 +1,155 @@
 package com.example.retrofit_entrega1;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link PerfilFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class PerfilFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private EditText etCodigo, etDni, etNombre, etApellido, etEmail, etTelefono;
+    private Button btnEditarGuardar, btnCambiarClave;
+    private boolean enModoEdicion = false;
+    private Propietario propietarioActual;
+    private String token;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public PerfilFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment PerfilFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static PerfilFragment newInstance(String param1, String param2) {
-        PerfilFragment fragment = new PerfilFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+    @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_perfil, container, false);
+
+        etCodigo = view.findViewById(R.id.etCodigo);
+        etDni = view.findViewById(R.id.etDni);
+        etNombre = view.findViewById(R.id.etNombre);
+        etApellido = view.findViewById(R.id.etApellido);
+        etEmail = view.findViewById(R.id.etEmail);
+        etTelefono = view.findViewById(R.id.etTelefono);
+        btnEditarGuardar = view.findViewById(R.id.btnEditarGuardar);
+        btnCambiarClave = view.findViewById(R.id.btnCambiarClave);
+
+        SharedPreferences sp = requireActivity().getSharedPreferences("token.xml", Context.MODE_PRIVATE);
+        token = sp.getString("token", "");
+
+        obtenerDatos();
+
+        btnEditarGuardar.setOnClickListener(v -> {
+            if (!enModoEdicion) {
+                habilitar(true);
+            } else {
+                guardarDatos();
+            }
+        });
+
+        btnCambiarClave.setOnClickListener(v -> mostrarDialogoCambioClave());
+
+        return view;
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_perfil, container, false);
+    private void obtenerDatos() {
+        ApiClient.getApi().obtenerPerfil(token).enqueue(new Callback<Propietario>() {
+            @Override
+            public void onResponse(Call<Propietario> call, Response<Propietario> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    propietarioActual = response.body();
+                    etCodigo.setText(String.valueOf(propietarioActual.getIdPropietario()));
+                    etDni.setText(propietarioActual.getDni());
+                    etNombre.setText(propietarioActual.getNombre());
+                    etApellido.setText(propietarioActual.getApellido());
+                    etEmail.setText(propietarioActual.getEmail());
+                    etTelefono.setText(propietarioActual.getTelefono());
+                }
+            }
+            @Override
+            public void onFailure(Call<Propietario> call, Throwable t) {}
+        });
+    }
+
+    private void habilitar(boolean habilitar) {
+        enModoEdicion = habilitar;
+        etDni.setEnabled(habilitar);
+        etNombre.setEnabled(habilitar);
+        etApellido.setEnabled(habilitar);
+        etEmail.setEnabled(habilitar);
+        etTelefono.setEnabled(habilitar);
+        btnEditarGuardar.setText(habilitar ? "GUARDAR" : "EDITAR MIS DATOS");
+    }
+
+    private void guardarDatos() {
+        propietarioActual.setDni(etDni.getText().toString());
+        propietarioActual.setNombre(etNombre.getText().toString());
+        propietarioActual.setApellido(etApellido.getText().toString());
+        propietarioActual.setEmail(etEmail.getText().toString());
+        propietarioActual.setTelefono(etTelefono.getText().toString());
+        
+        int idOriginal = propietarioActual.getIdPropietario();
+        propietarioActual.setIdPropietario(0);
+
+        ApiClient.getApi().actualizarPerfil(token, propietarioActual).enqueue(new Callback<Propietario>() {
+            @Override
+            public void onResponse(Call<Propietario> call, Response<Propietario> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(getContext(), "Perfil actualizado", Toast.LENGTH_SHORT).show();
+                    if (response.body() != null) {
+                        propietarioActual = response.body();
+                        etCodigo.setText(String.valueOf(propietarioActual.getIdPropietario()));
+                    } else {
+                        propietarioActual.setIdPropietario(idOriginal);
+                    }
+                    habilitar(false);
+                }
+            }
+            @Override
+            public void onFailure(Call<Propietario> call, Throwable t) {
+                propietarioActual.setIdPropietario(idOriginal);
+                Toast.makeText(getContext(), "Error al actualizar", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void mostrarDialogoCambioClave() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Cambiar Contraseña");
+
+        LinearLayout layout = new LinearLayout(getContext());
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setPadding(50, 40, 50, 10);
+
+        final EditText etActual = new EditText(getContext());
+        etActual.setHint("Contraseña Actual");
+        layout.addView(etActual);
+
+        final EditText etNueva = new EditText(getContext());
+        etNueva.setHint("Nueva Contraseña");
+        layout.addView(etNueva);
+
+        builder.setView(layout);
+
+        builder.setPositiveButton("CAMBIAR", (dialog, which) -> {
+            String actual = etActual.getText().toString();
+            String nueva = etNueva.getText().toString();
+            ApiClient.getApi().cambiarPassword(token, actual, nueva).enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    Toast.makeText(getContext(), response.isSuccessful() ? "Contraseña cambiada" : "Error al cambiar", Toast.LENGTH_SHORT).show();
+                }
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {}
+            });
+        });
+        builder.setNegativeButton("CANCELAR", (dialog, which) -> dialog.cancel());
+        builder.show();
     }
 }
