@@ -8,14 +8,13 @@ public class Inmueble implements Serializable {
     private String uso;
     private String tipo;
     private int ambientes;
-    private double superficie;
+    private int superficie;
     private double latitud;
     private double longitud;
     private double valor;
     private String imagen;
     private boolean disponible;
     private int idPropietario;
-    private Propietario duenio;
 
     public int getIdInmueble() { return idInmueble; }
     public void setIdInmueble(int idInmueble) { this.idInmueble = idInmueble; }
@@ -27,8 +26,8 @@ public class Inmueble implements Serializable {
     public void setTipo(String tipo) { this.tipo = tipo; }
     public int getAmbientes() { return ambientes; }
     public void setAmbientes(int ambientes) { this.ambientes = ambientes; }
-    public double getSuperficie() { return superficie; }
-    public void setSuperficie(double superficie) { this.superficie = superficie; }
+    public int getSuperficie() { return superficie; }
+    public void setSuperficie(int superficie) { this.superficie = superficie; }
     public double getLatitud() { return latitud; }
     public void setLatitud(double latitud) { this.latitud = latitud; }
     public double getLongitud() { return longitud; }
@@ -41,6 +40,4 @@ public class Inmueble implements Serializable {
     public void setDisponible(boolean disponible) { this.disponible = disponible; }
     public int getIdPropietario() { return idPropietario; }
     public void setIdPropietario(int idPropietario) { this.idPropietario = idPropietario; }
-    public Propietario getDuenio() { return duenio; }
-    public void setDuenio(Propietario duenio) { this.duenio = duenio; }
 }

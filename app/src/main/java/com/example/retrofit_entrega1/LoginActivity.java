@@ -33,6 +33,7 @@ public class LoginActivity extends AppCompatActivity implements SensorEventListe
         EditText etEmail = findViewById(R.id.etEmail);
         EditText etPassword = findViewById(R.id.etPassword);
         Button btnLogin = findViewById(R.id.btnLogin);
+        Button btnReset = findViewById(R.id.btnReset);
 
         btnLogin.setOnClickListener(v -> {
             String correo = etEmail.getText().toString();
@@ -59,6 +60,22 @@ public class LoginActivity extends AppCompatActivity implements SensorEventListe
                 @Override
                 public void onFailure(Call<String> call, Throwable t) {
                     Toast.makeText(LoginActivity.this, "Error de red", Toast.LENGTH_LONG).show();
+                }
+            });
+        });
+
+        btnReset.setOnClickListener(v -> {
+            ApiClient.getApi().resetearPassword().enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    if (response.isSuccessful()) {
+                        Toast.makeText(LoginActivity.this, "Datos reseteados. Clave: DEEKQW", Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    Toast.makeText(LoginActivity.this, "Error al resetear", Toast.LENGTH_SHORT).show();
                 }
             });
         });

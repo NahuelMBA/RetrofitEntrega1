@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -14,25 +14,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import java.util.List;
 
-public class InmueblesAdapter extends RecyclerView.Adapter<InmueblesAdapter.ViewHolder> {
+public class AlquiladosAdapter extends RecyclerView.Adapter<AlquiladosAdapter.ViewHolder> {
     private List<Inmueble> lista;
     private Context context;
-    private OnItemClickListener listener;
+    private int destino;
 
-    public interface OnItemClickListener {
-        void onDisponibleChanged(Inmueble inmueble);
-    }
-
-    public InmueblesAdapter(List<Inmueble> lista, Context context, OnItemClickListener listener) {
+    public AlquiladosAdapter(List<Inmueble> lista, Context context, int destino) {
         this.lista = lista;
         this.context = context;
-        this.listener = listener;
+        this.destino = destino;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_inmueble, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_alquilado, parent, false);
         return new ViewHolder(view);
     }
 
@@ -40,22 +36,15 @@ public class InmueblesAdapter extends RecyclerView.Adapter<InmueblesAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Inmueble inmueble = lista.get(position);
         holder.tvDireccion.setText(inmueble.getDireccion());
-        holder.tvPrecio.setText("$" + inmueble.getValor());
-        holder.cbDisponible.setChecked(inmueble.isDisponible());
-
+        
         Glide.with(context)
                 .load("https://capacitacion.alwaysdata.net/" + inmueble.getImagen())
                 .into(holder.ivInmueble);
 
-        holder.cbDisponible.setOnClickListener(v -> {
-            inmueble.setDisponible(holder.cbDisponible.isChecked());
-            listener.onDisponibleChanged(inmueble);
-        });
-
-        holder.itemView.setOnClickListener(v -> {
+        holder.btnVer.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
             bundle.putSerializable("inmueble", inmueble);
-            Navigation.findNavController(v).navigate(R.id.detalleInmuebleFragment, bundle);
+            Navigation.findNavController(v).navigate(destino, bundle);
         });
     }
 
@@ -65,16 +54,15 @@ public class InmueblesAdapter extends RecyclerView.Adapter<InmueblesAdapter.View
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvDireccion, tvPrecio;
+        TextView tvDireccion;
         ImageView ivInmueble;
-        CheckBox cbDisponible;
+        Button btnVer;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvDireccion = itemView.findViewById(R.id.tvDireccion);
-            tvPrecio = itemView.findViewById(R.id.tvPrecio);
-            ivInmueble = itemView.findViewById(R.id.ivInmueble);
-            cbDisponible = itemView.findViewById(R.id.cbDisponible);
+            tvDireccion = itemView.findViewById(R.id.tvAlquiladoDireccion);
+            ivInmueble = itemView.findViewById(R.id.ivAlquilado);
+            btnVer = itemView.findViewById(R.id.btnVerAlquilado);
         }
     }
 }

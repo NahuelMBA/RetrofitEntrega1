@@ -10,4 +10,6 @@
     <fragment android:id="@+id/inquilinosFragment" android:name="com.example.retrofit_entrega1.InquilinosFragment" />
     <fragment android:id="@+id/contratosFragment" android:name="com.example.retrofit_entrega1.ContratosFragment" />
     <fragment android:id="@+id/logoutFragment" android:name="com.example.retrofit_entrega1.LogoutFragment" />
+    <fragment android:id="@+id/detalleInmuebleFragment" android:name="com.example.retrofit_entrega1.DetalleInmuebleFragment" />
+    <fragment android:id="@+id/cargarInmuebleFragment" android:name="com.example.retrofit_entrega1.CargarInmuebleFragment" />
 </navigation>
