@@ -1,4 +1,4 @@
-package com.example.retrofit_entrega1;
+package com.example.retrofit_entrega1.view;
 
 import android.app.Activity;
 import android.content.Context;
@@ -20,6 +20,10 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.example.retrofit_entrega1.api.ApiClient;
+import com.example.retrofit_entrega1.R;
+import com.example.retrofit_entrega1.model.Inmueble;
 import com.google.gson.JsonObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;

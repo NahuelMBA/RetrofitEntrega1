@@ -1,4 +1,4 @@
-package com.example.retrofit_entrega1;
+package com.example.retrofit_entrega1.model;
 
 import java.io.Serializable;
 

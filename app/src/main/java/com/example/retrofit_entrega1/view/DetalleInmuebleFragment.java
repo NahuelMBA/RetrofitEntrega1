@@ -1,4 +1,4 @@
-package com.example.retrofit_entrega1;
+package com.example.retrofit_entrega1.view;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -14,6 +14,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
+import com.example.retrofit_entrega1.api.ApiClient;
+import com.example.retrofit_entrega1.R;
+import com.example.retrofit_entrega1.model.Inmueble;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

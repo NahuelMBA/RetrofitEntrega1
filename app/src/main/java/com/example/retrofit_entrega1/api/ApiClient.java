@@ -1,4 +1,7 @@
-package com.example.retrofit_entrega1;
+package com.example.retrofit_entrega1.api;
+
+import com.example.retrofit_entrega1.model.Inmueble;
+import com.example.retrofit_entrega1.model.Propietario;
 
 import java.util.List;
 import okhttp3.MultipartBody;

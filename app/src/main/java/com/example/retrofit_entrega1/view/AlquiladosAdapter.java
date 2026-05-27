@@ -1,4 +1,4 @@
-package com.example.retrofit_entrega1;
+package com.example.retrofit_entrega1.view;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,6 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
+import com.example.retrofit_entrega1.R;
+import com.example.retrofit_entrega1.model.Inmueble;
+
 import java.util.List;
 
 public class AlquiladosAdapter extends RecyclerView.Adapter<AlquiladosAdapter.ViewHolder> {

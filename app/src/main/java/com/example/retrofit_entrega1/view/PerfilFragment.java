@@ -1,4 +1,4 @@
-package com.example.retrofit_entrega1;
+package com.example.retrofit_entrega1.view;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -14,6 +14,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.example.retrofit_entrega1.api.ApiClient;
+import com.example.retrofit_entrega1.R;
+import com.example.retrofit_entrega1.model.Propietario;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

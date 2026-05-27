@@ -1,4 +1,4 @@
-package com.example.retrofit_entrega1;
+package com.example.retrofit_entrega1.view;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,6 +7,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
+import com.example.retrofit_entrega1.R;
 import com.example.retrofit_entrega1.databinding.ActivityMainBinding;
 import com.google.android.material.navigation.NavigationView;
 

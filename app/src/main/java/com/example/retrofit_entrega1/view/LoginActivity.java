@@ -1,4 +1,4 @@
-package com.example.retrofit_entrega1;
+package com.example.retrofit_entrega1.view;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +13,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.retrofit_entrega1.api.ApiClient;
+import com.example.retrofit_entrega1.R;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

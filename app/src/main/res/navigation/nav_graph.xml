@@ -4,12 +4,12 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/inicioFragment">
 
-    <fragment android:id="@+id/inicioFragment" android:name="com.example.retrofit_entrega1.InicioFragment" />
-    <fragment android:id="@+id/perfilFragment" android:name="com.example.retrofit_entrega1.PerfilFragment" />
-    <fragment android:id="@+id/inmueblesFragment" android:name="com.example.retrofit_entrega1.InmueblesFragment" />
-    <fragment android:id="@+id/inquilinosFragment" android:name="com.example.retrofit_entrega1.InquilinosFragment" />
-    <fragment android:id="@+id/contratosFragment" android:name="com.example.retrofit_entrega1.ContratosFragment" />
-    <fragment android:id="@+id/logoutFragment" android:name="com.example.retrofit_entrega1.LogoutFragment" />
-    <fragment android:id="@+id/detalleInmuebleFragment" android:name="com.example.retrofit_entrega1.DetalleInmuebleFragment" />
-    <fragment android:id="@+id/cargarInmuebleFragment" android:name="com.example.retrofit_entrega1.CargarInmuebleFragment" />
+    <fragment android:id="@+id/inicioFragment" android:name="com.example.retrofit_entrega1.view.InicioFragment" />
+    <fragment android:id="@+id/perfilFragment" android:name="com.example.retrofit_entrega1.view.PerfilFragment" />
+    <fragment android:id="@+id/inmueblesFragment" android:name="com.example.retrofit_entrega1.view.InmueblesFragment" />
+    <fragment android:id="@+id/inquilinosFragment" android:name="com.example.retrofit_entrega1.view.InquilinosFragment" />
+    <fragment android:id="@+id/contratosFragment" android:name="com.example.retrofit_entrega1.view.ContratosFragment" />
+    <fragment android:id="@+id/logoutFragment" android:name="com.example.retrofit_entrega1.view.LogoutFragment" />
+    <fragment android:id="@+id/detalleInmuebleFragment" android:name="com.example.retrofit_entrega1.view.DetalleInmuebleFragment" />
+    <fragment android:id="@+id/cargarInmuebleFragment" android:name="com.example.retrofit_entrega1.view.CargarInmuebleFragment" />
 </navigation>
