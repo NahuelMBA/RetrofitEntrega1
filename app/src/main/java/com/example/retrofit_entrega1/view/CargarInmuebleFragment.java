@@ -21,10 +21,10 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
-import com.example.retrofit_entrega1.api.ApiClient;
 import com.example.retrofit_entrega1.R;
-import com.example.retrofit_entrega1.model.Inmueble;
+import com.example.retrofit_entrega1.viewmodel.CargarInmuebleViewModel;
 import com.google.gson.JsonObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -33,15 +33,13 @@ import java.io.IOException;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class CargarInmuebleFragment extends Fragment {
     private EditText etDireccion, etUso, etTipo, etAmbientes, etSuperficie, etPrecio;
     private Button btnSeleccionar, btnCargar;
     private ImageView ivFoto;
     private Uri uriImagen;
+    private CargarInmuebleViewModel viewModel;
 
     private final ActivityResultLauncher<Intent> galleryLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -67,6 +65,18 @@ public class CargarInmuebleFragment extends Fragment {
         btnSeleccionar = view.findViewById(R.id.btnSeleccionarFoto);
         btnCargar = view.findViewById(R.id.btnCargarInmueble);
         ivFoto = view.findViewById(R.id.ivCargarFoto);
+
+        viewModel = new ViewModelProvider(this).get(CargarInmuebleViewModel.class);
+
+        viewModel.getMensajeToast().observe(getViewLifecycleOwner(), mensaje -> {
+            Toast.makeText(getContext(), mensaje, Toast.LENGTH_SHORT).show();
+        });
+
+        viewModel.getCargaExitosa().observe(getViewLifecycleOwner(), exitosa -> {
+            if (exitosa) {
+                Navigation.findNavController(requireView()).navigateUp();
+            }
+        });
 
         btnSeleccionar.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -120,22 +130,6 @@ public class CargarInmuebleFragment extends Fragment {
         SharedPreferences sp = requireActivity().getSharedPreferences("token.xml", Context.MODE_PRIVATE);
         String token = sp.getString("token", "");
 
-        ApiClient.getApi().cargarInmueble(token, bodyImagen, inmuebleBody).enqueue(new Callback<Inmueble>() {
-            @Override
-            public void onResponse(Call<Inmueble> call, Response<Inmueble> response) {
-                if (isAdded()) {
-                    if (response.isSuccessful()) {
-                        Toast.makeText(getContext(), "Cargado con éxito", Toast.LENGTH_SHORT).show();
-                        Navigation.findNavController(requireView()).navigateUp();
-                    } else {
-                        Toast.makeText(getContext(), "Error: " + response.code(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-            @Override
-            public void onFailure(Call<Inmueble> call, Throwable t) {
-                if (isAdded()) Toast.makeText(getContext(), "Error de red", Toast.LENGTH_SHORT).show();
-            }
-        });
+        viewModel.cargarInmueble(token, bodyImagen, inmuebleBody);
     }
 }

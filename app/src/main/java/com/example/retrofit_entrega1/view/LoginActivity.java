@@ -13,13 +13,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
-import com.example.retrofit_entrega1.api.ApiClient;
 import com.example.retrofit_entrega1.R;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import com.example.retrofit_entrega1.viewmodel.LoginViewModel;
 
 public class LoginActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -28,6 +25,7 @@ public class LoginActivity extends AppCompatActivity implements SensorEventListe
     private float acceleration = 0f;
     private float currentAcceleration = SensorManager.GRAVITY_EARTH;
     private float lastAcceleration = SensorManager.GRAVITY_EARTH;
+    private LoginViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +37,19 @@ public class LoginActivity extends AppCompatActivity implements SensorEventListe
         Button btnLogin = findViewById(R.id.btnLogin);
         Button btnReset = findViewById(R.id.btnReset);
 
+        viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+
+        viewModel.getToken().observe(this, token -> {
+            SharedPreferences sp = getSharedPreferences("token.xml", MODE_PRIVATE);
+            sp.edit().putString("token", "Bearer " + token).apply();
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            finish();
+        });
+
+        viewModel.getMensajeToast().observe(this, mensaje -> {
+            Toast.makeText(this, mensaje, Toast.LENGTH_LONG).show();
+        });
+
         btnLogin.setOnClickListener(v -> {
             String correo = etEmail.getText().toString();
             String clave = etPassword.getText().toString();
@@ -48,41 +59,10 @@ public class LoginActivity extends AppCompatActivity implements SensorEventListe
                 return;
             }
 
-            ApiClient.getApi().login(correo, clave).enqueue(new Callback<String>() {
-                @Override
-                public void onResponse(Call<String> call, Response<String> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        SharedPreferences sp = getSharedPreferences("token.xml", MODE_PRIVATE);
-                        sp.edit().putString("token", "Bearer " + response.body()).apply();
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                        finish();
-                    } else {
-                        Toast.makeText(LoginActivity.this, "Credenciales incorrectas", Toast.LENGTH_LONG).show();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<String> call, Throwable t) {
-                    Toast.makeText(LoginActivity.this, "Error de red", Toast.LENGTH_LONG).show();
-                }
-            });
+            viewModel.login(correo, clave);
         });
 
-        btnReset.setOnClickListener(v -> {
-            ApiClient.getApi().resetearPassword().enqueue(new Callback<String>() {
-                @Override
-                public void onResponse(Call<String> call, Response<String> response) {
-                    if (response.isSuccessful()) {
-                        Toast.makeText(LoginActivity.this, "Datos reseteados. Clave: DEEKQW", Toast.LENGTH_LONG).show();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<String> call, Throwable t) {
-                    Toast.makeText(LoginActivity.this, "Error al resetear", Toast.LENGTH_SHORT).show();
-                }
-            });
-        });
+        btnReset.setOnClickListener(v -> viewModel.resetearPassword());
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         if (sensorManager != null) {
