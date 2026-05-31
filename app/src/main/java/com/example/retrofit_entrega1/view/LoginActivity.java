@@ -98,14 +98,14 @@ public class LoginActivity extends AppCompatActivity implements SensorEventListe
             float z = event.values[2];
             lastAcceleration = currentAcceleration;
             currentAcceleration = (float) Math.sqrt((double) (x * x + y * y + z * z));
-            float delta = currentAcceleration - lastAcceleration;
+            float delta = Math.abs(currentAcceleration - lastAcceleration);
             acceleration = acceleration * 0.9f + delta;
 
             if (acceleration > 12) {
+                acceleration = 0f;
                 Intent intentLlamada = new Intent(Intent.ACTION_DIAL);
                 intentLlamada.setData(Uri.parse("tel:123456789"));
                 startActivity(intentLlamada);
-                sensorManager.unregisterListener(this);
             }
         }
     }

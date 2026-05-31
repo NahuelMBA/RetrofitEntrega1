@@ -63,7 +63,7 @@ public class DetalleInmuebleFragment extends Fragment {
         etUso.setText(inmueble.getUso());
         etTipo.setText(inmueble.getTipo());
         etAmbientes.setText(String.valueOf(inmueble.getAmbientes()));
-        etPrecio.setText("$" + inmueble.getValor());
+        etPrecio.setText(String.valueOf(inmueble.getValor()));
         cbDisponible.setChecked(inmueble.isDisponible());
 
         Glide.with(requireContext())
@@ -116,7 +116,6 @@ public class DetalleInmuebleFragment extends Fragment {
         update.setValor(inmueble.getValor());
         update.setImagen(inmueble.getImagen());
         update.setDisponible(disponible);
-        update.setIdPropietario(0);
         return update;
     }
 }

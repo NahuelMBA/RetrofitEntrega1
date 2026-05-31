@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     android:padding="16dp">
 
     <LinearLayout
@@ -15,39 +17,44 @@
             android:text="Cargar Nuevo Inmueble"
             android:textSize="22sp"
             android:textStyle="bold"
-            android:textColor="#6200EA"
+            android:textColor="@color/primary"
             android:layout_marginBottom="16dp" />
 
-        <EditText android:id="@+id/etCargarDireccion" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Dirección" android:layout_marginBottom="8dp"/>
-        <EditText android:id="@+id/etCargarUso" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Uso (comercial/residencial)" android:layout_marginBottom="8dp"/>
-        <EditText android:id="@+id/etCargarTipo" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Tipo (casa/depto/etc)" android:layout_marginBottom="8dp"/>
-        <EditText android:id="@+id/etCargarAmbientes" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Ambientes" android:inputType="number" android:layout_marginBottom="8dp"/>
-        <EditText android:id="@+id/etCargarSuperficie" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Superficie" android:inputType="number" android:layout_marginBottom="8dp"/>
-        <EditText android:id="@+id/etCargarPrecio" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Precio" android:inputType="numberDecimal" android:layout_marginBottom="8dp"/>
+        <EditText android:id="@+id/etCargarDireccion" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Dirección" android:layout_marginBottom="8dp" android:textColor="@color/text_primary"/>
+        <EditText android:id="@+id/etCargarUso" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Uso (comercial/residencial)" android:layout_marginBottom="8dp" android:textColor="@color/text_primary"/>
+        <EditText android:id="@+id/etCargarTipo" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Tipo (casa/depto/etc)" android:layout_marginBottom="8dp" android:textColor="@color/text_primary"/>
+        <EditText android:id="@+id/etCargarAmbientes" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Ambientes" android:inputType="number" android:layout_marginBottom="8dp" android:textColor="@color/text_primary"/>
+        <EditText android:id="@+id/etCargarSuperficie" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Superficie" android:inputType="number" android:layout_marginBottom="8dp" android:textColor="@color/text_primary"/>
+        <EditText android:id="@+id/etCargarPrecio" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Precio" android:inputType="numberDecimal" android:layout_marginBottom="8dp" android:textColor="@color/text_primary"/>
 
         <Button
             android:id="@+id/btnSeleccionarFoto"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:text="Seleccionar Foto"
-            android:layout_marginTop="8dp"/>
+            android:layout_marginTop="8dp"
+            android:backgroundTint="@color/primary"
+            android:textColor="@color/white"
+            app:cornerRadius="12dp" />
 
         <ImageView
             android:id="@+id/ivCargarFoto"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
             android:scaleType="centerCrop"
             android:visibility="gone"/>
 
         <Button
             android:id="@+id/btnCargarInmueble"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="24dp"
+            android:layout_height="56dp"
+            android:layout_marginTop="20dp"
             android:text="CARGAR INMUEBLE"
-            android:backgroundTint="#6200EA"
-            android:textColor="#FFFFFF" />
+            android:backgroundTint="@color/accent"
+            android:textColor="@color/primary"
+            android:textStyle="bold"
+            app:cornerRadius="14dp" />
 
     </LinearLayout>
 </ScrollView>

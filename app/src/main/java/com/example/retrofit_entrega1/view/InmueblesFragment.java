@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.retrofit_entrega1.viewmodel.InmueblesViewModel;
@@ -34,7 +34,7 @@ public class InmueblesFragment extends Fragment {
 
         rvInmuebles = view.findViewById(R.id.rvInmuebles);
         fabAgregar = view.findViewById(R.id.fabAgregarInmueble);
-        rvInmuebles.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvInmuebles.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
         fabAgregar.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.cargarInmuebleFragment));
 
@@ -92,7 +92,6 @@ public class InmueblesFragment extends Fragment {
         update.setValor(inmueble.getValor());
         update.setImagen(inmueble.getImagen());
         update.setDisponible(disponible);
-        update.setIdPropietario(0);
         return update;
     }
 }

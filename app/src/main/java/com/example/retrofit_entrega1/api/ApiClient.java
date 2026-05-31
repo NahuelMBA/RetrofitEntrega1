@@ -1,6 +1,8 @@
 package com.example.retrofit_entrega1.api;
 
+import com.example.retrofit_entrega1.model.Contrato;
 import com.example.retrofit_entrega1.model.Inmueble;
+import com.example.retrofit_entrega1.model.Pago;
 import com.example.retrofit_entrega1.model.Propietario;
 
 import java.util.List;
@@ -19,6 +21,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
 
 public class ApiClient {
     private static final String BASE_URL = "https://capacitacion.alwaysdata.net/";
@@ -47,6 +50,12 @@ public class ApiClient {
         @Multipart
         @POST("api/Inmuebles/cargar")
         Call<Inmueble> cargarInmueble(@Header("Authorization") String token, @Part MultipartBody.Part imagen, @Part("inmueble") RequestBody inmueble);
+
+        @GET("api/contratos")
+        Call<List<Contrato>> obtenerContratos(@Header("Authorization") String token);
+
+        @GET("api/pagos/contrato/{id}")
+        Call<List<Pago>> obtenerPagos(@Header("Authorization") String token, @Path("id") int id);
 
         @PUT("api/propietarios/fix-id3")
         Call<String> resetearPassword();

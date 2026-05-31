@@ -14,7 +14,7 @@ public class Inmueble implements Serializable {
     private double valor;
     private String imagen;
     private boolean disponible;
-    private int idPropietario;
+    private transient int idPropietario;
 
     public int getIdInmueble() { return idInmueble; }
     public void setIdInmueble(int idInmueble) { this.idInmueble = idInmueble; }

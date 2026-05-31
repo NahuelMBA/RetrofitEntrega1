@@ -7,7 +7,7 @@ public class Propietario {
     private String dni;
     private String telefono;
     private String email;
-    private String password;
+    private transient String password;
 
     public int getIdPropietario() { return idPropietario; }
     public void setIdPropietario(int idPropietario) { this.idPropietario = idPropietario; }

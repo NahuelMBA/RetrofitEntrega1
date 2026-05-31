@@ -4,14 +4,16 @@ import java.io.Serializable;
 
 public class Pago implements Serializable {
     private int idPago;
-    private int nroPago;
-    private int idAlquiler;
-    private String fecha;
-    private double importe;
+    private String fechaPago;
+    private double monto;
+    private String detalle;
+    private boolean estado;
+    private int idContrato;
 
     public int getIdPago() { return idPago; }
-    public int getNroPago() { return nroPago; }
-    public int getIdAlquiler() { return idAlquiler; }
-    public String getFecha() { return fecha; }
-    public double getImporte() { return importe; }
+    public String getFechaPago() { return fechaPago; }
+    public double getMonto() { return monto; }
+    public String getDetalle() { return detalle; }
+    public boolean isEstado() { return estado; }
+    public int getIdContrato() { return idContrato; }
 }

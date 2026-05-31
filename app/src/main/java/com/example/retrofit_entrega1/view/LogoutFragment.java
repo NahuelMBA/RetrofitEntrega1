@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.example.retrofit_entrega1.R;
 
@@ -19,14 +20,20 @@ public class LogoutFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mostrarDialogo();
         return inflater.inflate(R.layout.fragment_logout, container, false);
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mostrarDialogo();
+    }
+
     private void mostrarDialogo() {
-        new AlertDialog.Builder(getContext())
+        new AlertDialog.Builder(requireContext())
                 .setTitle("Cierre de sesión")
                 .setMessage("¿Está seguro de que desea cerrar la sesión?")
+                .setCancelable(false)
                 .setPositiveButton("ACEPTAR", (dialog, which) -> {
                     SharedPreferences sp = requireActivity().getSharedPreferences("token.xml", Context.MODE_PRIVATE);
                     sp.edit().clear().apply();
@@ -36,7 +43,8 @@ public class LogoutFragment extends Fragment {
                     requireActivity().finish();
                 })
                 .setNegativeButton("CANCELAR", (dialog, which) -> {
-                    requireActivity().onBackPressed();
+                    dialog.dismiss();
+                    Navigation.findNavController(requireView()).navigateUp();
                 })
                 .show();
     }

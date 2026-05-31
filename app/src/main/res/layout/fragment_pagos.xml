@@ -6,19 +6,19 @@
     android:padding="16dp">
 
     <TextView
-        android:id="@+id/tvTituloInquilinos"
+        android:id="@+id/tvTituloPagos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Inmuebles Alquilados"
+        android:text="Detalle de Pagos"
         android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="@color/primary"
         android:layout_marginBottom="16dp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvAlquilados"
+        android:id="@+id/rvPagos"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/tvTituloInquilinos" />
+        android:layout_below="@id/tvTituloPagos" />
 
 </RelativeLayout>

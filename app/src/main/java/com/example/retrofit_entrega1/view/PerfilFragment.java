@@ -14,14 +14,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
-import com.example.retrofit_entrega1.api.ApiClient;
 import com.example.retrofit_entrega1.R;
 import com.example.retrofit_entrega1.model.Propietario;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import com.example.retrofit_entrega1.viewmodel.PerfilViewModel;
 
 public class PerfilFragment extends Fragment {
 
@@ -30,6 +27,7 @@ public class PerfilFragment extends Fragment {
     private boolean enModoEdicion = false;
     private Propietario propietarioActual;
     private String token;
+    private PerfilViewModel viewModel;
 
     @Nullable
     @Override
@@ -48,7 +46,24 @@ public class PerfilFragment extends Fragment {
         SharedPreferences sp = requireActivity().getSharedPreferences("token.xml", Context.MODE_PRIVATE);
         token = sp.getString("token", "");
 
-        obtenerDatos();
+        viewModel = new ViewModelProvider(this).get(PerfilViewModel.class);
+
+        viewModel.getPerfil().observe(getViewLifecycleOwner(), propietario -> {
+            propietarioActual = propietario;
+            etCodigo.setText(String.valueOf(propietario.getIdPropietario()));
+            etDni.setText(propietario.getDni());
+            etNombre.setText(propietario.getNombre());
+            etApellido.setText(propietario.getApellido());
+            etEmail.setText(propietario.getEmail());
+            etTelefono.setText(propietario.getTelefono());
+            habilitar(false);
+        });
+
+        viewModel.getMensajeToast().observe(getViewLifecycleOwner(), mensaje -> {
+            Toast.makeText(getContext(), mensaje, Toast.LENGTH_SHORT).show();
+        });
+
+        viewModel.obtenerPerfil(token);
 
         btnEditarGuardar.setOnClickListener(v -> {
             if (!enModoEdicion) {
@@ -61,25 +76,6 @@ public class PerfilFragment extends Fragment {
         btnCambiarClave.setOnClickListener(v -> mostrarDialogoCambioClave());
 
         return view;
-    }
-
-    private void obtenerDatos() {
-        ApiClient.getApi().obtenerPerfil(token).enqueue(new Callback<Propietario>() {
-            @Override
-            public void onResponse(Call<Propietario> call, Response<Propietario> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    propietarioActual = response.body();
-                    etCodigo.setText(String.valueOf(propietarioActual.getIdPropietario()));
-                    etDni.setText(propietarioActual.getDni());
-                    etNombre.setText(propietarioActual.getNombre());
-                    etApellido.setText(propietarioActual.getApellido());
-                    etEmail.setText(propietarioActual.getEmail());
-                    etTelefono.setText(propietarioActual.getTelefono());
-                }
-            }
-            @Override
-            public void onFailure(Call<Propietario> call, Throwable t) {}
-        });
     }
 
     private void habilitar(boolean habilitar) {
@@ -98,30 +94,7 @@ public class PerfilFragment extends Fragment {
         propietarioActual.setApellido(etApellido.getText().toString());
         propietarioActual.setEmail(etEmail.getText().toString());
         propietarioActual.setTelefono(etTelefono.getText().toString());
-        
-        int idOriginal = propietarioActual.getIdPropietario();
-        propietarioActual.setIdPropietario(0);
-
-        ApiClient.getApi().actualizarPerfil(token, propietarioActual).enqueue(new Callback<Propietario>() {
-            @Override
-            public void onResponse(Call<Propietario> call, Response<Propietario> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(getContext(), "Perfil actualizado", Toast.LENGTH_SHORT).show();
-                    if (response.body() != null) {
-                        propietarioActual = response.body();
-                        etCodigo.setText(String.valueOf(propietarioActual.getIdPropietario()));
-                    } else {
-                        propietarioActual.setIdPropietario(idOriginal);
-                    }
-                    habilitar(false);
-                }
-            }
-            @Override
-            public void onFailure(Call<Propietario> call, Throwable t) {
-                propietarioActual.setIdPropietario(idOriginal);
-                Toast.makeText(getContext(), "Error al actualizar", Toast.LENGTH_SHORT).show();
-            }
-        });
+        viewModel.actualizarPerfil(token, propietarioActual);
     }
 
     private void mostrarDialogoCambioClave() {
@@ -145,14 +118,7 @@ public class PerfilFragment extends Fragment {
         builder.setPositiveButton("CAMBIAR", (dialog, which) -> {
             String actual = etActual.getText().toString();
             String nueva = etNueva.getText().toString();
-            ApiClient.getApi().cambiarPassword(token, actual, nueva).enqueue(new Callback<String>() {
-                @Override
-                public void onResponse(Call<String> call, Response<String> response) {
-                    Toast.makeText(getContext(), response.isSuccessful() ? "Contraseña cambiada" : "Error al cambiar", Toast.LENGTH_SHORT).show();
-                }
-                @Override
-                public void onFailure(Call<String> call, Throwable t) {}
-            });
+            viewModel.cambiarPassword(token, actual, nueva);
         });
         builder.setNegativeButton("CANCELAR", (dialog, which) -> dialog.cancel());
         builder.show();

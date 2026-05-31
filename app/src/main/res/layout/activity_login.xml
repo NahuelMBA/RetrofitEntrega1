@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F3F4F6">
+    android:background="@color/primary">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,75 +13,85 @@
         android:padding="32dp">
 
         <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
             android:layout_gravity="center"
             android:src="@android:drawable/ic_menu_myplaces"
-            app:tint="#6200EA" />
+            app:tint="@color/accent" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:text="Inmobiliaria"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="32dp"
             android:gravity="center"
-            android:text="Inmobiliaria Horizonte"
-            android:textColor="#1F2937"
-            android:textSize="28sp"
-            android:textStyle="bold" />
+            android:text="La Punta"
+            android:textColor="@color/accent"
+            android:textSize="18sp"
+            android:letterSpacing="0.15" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="8dp">
+            app:cardCornerRadius="20dp"
+            app:cardElevation="12dp"
+            app:cardBackgroundColor="@color/white">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="24dp">
+                android:padding="28dp">
 
                 <EditText
                     android:id="@+id/etEmail"
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
-                    android:background="@android:color/transparent"
+                    android:background="@color/input_bg"
                     android:hint="Correo electrónico"
                     android:inputType="textEmailAddress"
-                    android:textColor="#1F2937" />
+                    android:padding="14dp"
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_secondary" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="#E5E7EB" />
+                    android:layout_height="12dp" />
 
                 <EditText
                     android:id="@+id/etPassword"
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
-                    android:background="@android:color/transparent"
+                    android:background="@color/input_bg"
                     android:hint="Contraseña"
                     android:inputType="textPassword"
-                    android:textColor="#1F2937" />
+                    android:padding="14dp"
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_secondary" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginBottom="32dp"
-                    android:background="#E5E7EB" />
+                    android:layout_height="24dp" />
 
                 <Button
                     android:id="@+id/btnLogin"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:backgroundTint="#6200EA"
+                    android:layout_height="56dp"
+                    android:backgroundTint="@color/accent"
                     android:text="INGRESAR"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/primary"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    app:cornerRadius="12dp" />
+                    app:cornerRadius="14dp" />
 
                 <Button
                     android:id="@+id/btnReset"
@@ -90,7 +100,7 @@
                     android:layout_marginTop="8dp"
                     android:background="@android:color/transparent"
                     android:text="Resetear Datos Prueba (ID 3)"
-                    android:textColor="#6200EA"
+                    android:textColor="@color/text_secondary"
                     android:textSize="12sp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>

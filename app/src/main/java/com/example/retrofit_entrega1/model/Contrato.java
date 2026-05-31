@@ -5,15 +5,21 @@ import java.io.Serializable;
 public class Contrato implements Serializable {
     private int idContrato;
     private String fechaInicio;
-    private String fechaFin;
+    private String fechaFinalizacion;
     private double montoAlquiler;
+    private boolean estado;
+    private int idInquilino;
+    private int idInmueble;
     private Inquilino inquilino;
     private Inmueble inmueble;
 
     public int getIdContrato() { return idContrato; }
     public String getFechaInicio() { return fechaInicio; }
-    public String getFechaFin() { return fechaFin; }
+    public String getFechaFinalizacion() { return fechaFinalizacion; }
     public double getMontoAlquiler() { return montoAlquiler; }
+    public boolean isEstado() { return estado; }
+    public int getIdInquilino() { return idInquilino; }
+    public int getIdInmueble() { return idInmueble; }
     public Inquilino getInquilino() { return inquilino; }
     public Inmueble getInmueble() { return inmueble; }
 }

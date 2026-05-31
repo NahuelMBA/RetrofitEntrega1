@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     android:padding="16dp">
 
     <TextView
@@ -12,6 +13,7 @@
         android:text="Mis Inmuebles"
         android:textSize="24sp"
         android:textStyle="bold"
+        android:textColor="@color/primary"
         android:layout_marginBottom="16dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -28,7 +30,7 @@
         android:layout_alignParentEnd="true"
         android:layout_margin="16dp"
         android:src="@android:drawable/ic_input_add"
-        app:tint="#FFFFFF"
-        android:backgroundTint="#6200EA" />
+        app:tint="@color/primary"
+        android:backgroundTint="@color/accent" />
 
 </RelativeLayout>

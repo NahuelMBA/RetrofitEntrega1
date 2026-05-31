@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F3F4F6"
+    android:background="@color/background"
     android:padding="16dp">
 
     <LinearLayout
@@ -14,9 +14,10 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="20dp"
             app:cardCornerRadius="16dp"
-            app:cardElevation="4dp">
+            app:cardElevation="6dp"
+            app:cardBackgroundColor="@color/white">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -29,38 +30,38 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
                     android:text="Mis Datos Personales"
-                    android:textColor="#6200EA"
+                    android:textColor="@color/primary"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
-                <EditText android:id="@+id/etCodigo" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Código" android:enabled="false" android:layout_marginBottom="12dp"/>
-                <EditText android:id="@+id/etDni" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="DNI" android:enabled="false" android:inputType="number" android:layout_marginBottom="12dp"/>
-                <EditText android:id="@+id/etNombre" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Nombre" android:enabled="false" android:layout_marginBottom="12dp"/>
-                <EditText android:id="@+id/etApellido" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Apellido" android:enabled="false" android:layout_marginBottom="12dp"/>
-                <EditText android:id="@+id/etEmail" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Correo" android:enabled="false" android:inputType="textEmailAddress" android:layout_marginBottom="12dp"/>
-                <EditText android:id="@+id/etTelefono" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Teléfono" android:enabled="false" android:inputType="phone"/>
+                <EditText android:id="@+id/etCodigo" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Código" android:enabled="false" android:layout_marginBottom="12dp" android:textColor="@color/text_primary"/>
+                <EditText android:id="@+id/etDni" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="DNI" android:enabled="false" android:inputType="number" android:layout_marginBottom="12dp" android:textColor="@color/text_primary"/>
+                <EditText android:id="@+id/etNombre" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Nombre" android:enabled="false" android:layout_marginBottom="12dp" android:textColor="@color/text_primary"/>
+                <EditText android:id="@+id/etApellido" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Apellido" android:enabled="false" android:layout_marginBottom="12dp" android:textColor="@color/text_primary"/>
+                <EditText android:id="@+id/etEmail" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Correo" android:enabled="false" android:inputType="textEmailAddress" android:layout_marginBottom="12dp" android:textColor="@color/text_primary"/>
+                <EditText android:id="@+id/etTelefono" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Teléfono" android:enabled="false" android:inputType="phone" android:textColor="@color/text_primary"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
         <Button
             android:id="@+id/btnEditarGuardar"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginBottom="16dp"
-            android:backgroundTint="#00BFA5"
+            android:layout_height="56dp"
+            android:layout_marginBottom="12dp"
+            android:backgroundTint="@color/accent"
             android:text="EDITAR MIS DATOS"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/primary"
             android:textStyle="bold"
-            app:cornerRadius="12dp" />
+            app:cornerRadius="14dp" />
 
         <Button
             android:id="@+id/btnCambiarClave"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:backgroundTint="#6200EA"
+            android:layout_height="56dp"
+            android:backgroundTint="@color/primary"
             android:text="CAMBIAR CONTRASEÑA"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/white"
             android:textStyle="bold"
-            app:cornerRadius="12dp" />
+            app:cornerRadius="14dp" />
     </LinearLayout>
 </ScrollView>
