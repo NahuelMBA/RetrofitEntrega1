@@ -5,29 +5,35 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.retrofit_entrega1.R;
+import com.example.retrofit_entrega1.databinding.FragmentInicioBinding;
 
 public class InicioFragment extends Fragment {
+
+    private FragmentInicioBinding binding;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_inicio, container, false);
-        WebView webView = view.findViewById(R.id.webViewMapa);
+        binding = FragmentInicioBinding.inflate(inflater, container, false);
 
-        WebSettings webSettings = webView.getSettings();
+        WebSettings webSettings = binding.webViewMapa.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        webView.setWebViewClient(new WebViewClient());
+        binding.webViewMapa.setWebViewClient(new WebViewClient());
 
         String mapHtml = "<html><body style='margin:0;padding:0;'><iframe width='100%' height='100%' src='https://maps.google.com/maps?q=Universidad+de+la+Punta,San+Luis,Argentina&z=16&output=embed' frameborder='0' style='border:0'></iframe></body></html>";
-        webView.loadData(mapHtml, "text/html", "utf-8");
+        binding.webViewMapa.loadData(mapHtml, "text/html", "utf-8");
 
-        return view;
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

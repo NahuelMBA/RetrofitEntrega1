@@ -1,8 +1,13 @@
 package com.example.retrofit_entrega1.viewmodel;
 
+import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.example.retrofit_entrega1.api.ApiClient;
 import com.example.retrofit_entrega1.model.Propietario;
@@ -11,10 +16,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PerfilViewModel extends ViewModel {
+public class PerfilViewModel extends AndroidViewModel {
 
     private MutableLiveData<Propietario> perfilLiveData = new MutableLiveData<>();
     private MutableLiveData<String> mensajeToast = new MutableLiveData<>();
+
+    public PerfilViewModel(@NonNull Application application) {
+        super(application);
+    }
 
     public LiveData<Propietario> getPerfil() {
         return perfilLiveData;
@@ -24,8 +33,13 @@ public class PerfilViewModel extends ViewModel {
         return mensajeToast;
     }
 
-    public void obtenerPerfil(String token) {
-        ApiClient.getApi().obtenerPerfil(token).enqueue(new Callback<Propietario>() {
+    private String getToken() {
+        SharedPreferences sp = getApplication().getSharedPreferences("token.xml", Context.MODE_PRIVATE);
+        return sp.getString("token", "");
+    }
+
+    public void obtenerPerfil() {
+        ApiClient.getApi().obtenerPerfil(getToken()).enqueue(new Callback<Propietario>() {
             @Override
             public void onResponse(Call<Propietario> call, Response<Propietario> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -42,8 +56,8 @@ public class PerfilViewModel extends ViewModel {
         });
     }
 
-    public void actualizarPerfil(String token, Propietario propietario) {
-        ApiClient.getApi().actualizarPerfil(token, propietario).enqueue(new Callback<Propietario>() {
+    public void actualizarPerfil(Propietario propietario) {
+        ApiClient.getApi().actualizarPerfil(getToken(), propietario).enqueue(new Callback<Propietario>() {
             @Override
             public void onResponse(Call<Propietario> call, Response<Propietario> response) {
                 if (response.isSuccessful()) {
@@ -63,8 +77,8 @@ public class PerfilViewModel extends ViewModel {
         });
     }
 
-    public void cambiarPassword(String token, String actual, String nueva) {
-        ApiClient.getApi().cambiarPassword(token, actual, nueva).enqueue(new Callback<String>() {
+    public void cambiarPassword(String actual, String nueva) {
+        ApiClient.getApi().cambiarPassword(getToken(), actual, nueva).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful()) {

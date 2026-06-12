@@ -1,8 +1,13 @@
 package com.example.retrofit_entrega1.viewmodel;
 
+import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.example.retrofit_entrega1.api.ApiClient;
 import com.example.retrofit_entrega1.model.Inmueble;
@@ -12,10 +17,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class InmueblesViewModel extends ViewModel {
+public class InmueblesViewModel extends AndroidViewModel {
 
     private MutableLiveData<List<Inmueble>> inmueblesLiveData = new MutableLiveData<>();
     private MutableLiveData<String> mensajeToast = new MutableLiveData<>();
+
+    public InmueblesViewModel(@NonNull Application application) {
+        super(application);
+    }
 
     public LiveData<List<Inmueble>> getInmuebles() {
         return inmueblesLiveData;
@@ -25,8 +34,13 @@ public class InmueblesViewModel extends ViewModel {
         return mensajeToast;
     }
 
-    public void cargarInmuebles(String token) {
-        ApiClient.getApi().obtenerInmuebles(token).enqueue(new Callback<List<Inmueble>>() {
+    private String getToken() {
+        SharedPreferences sp = getApplication().getSharedPreferences("token.xml", Context.MODE_PRIVATE);
+        return sp.getString("token", "");
+    }
+
+    public void cargarInmuebles() {
+        ApiClient.getApi().obtenerInmuebles(getToken()).enqueue(new Callback<List<Inmueble>>() {
             @Override
             public void onResponse(Call<List<Inmueble>> call, Response<List<Inmueble>> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -43,8 +57,8 @@ public class InmueblesViewModel extends ViewModel {
         });
     }
 
-    public void actualizarInmueble(String token, Inmueble update, Runnable onSuccess, Runnable onFailure) {
-        ApiClient.getApi().actualizarInmueble(token, update).enqueue(new Callback<Inmueble>() {
+    public void actualizarInmueble(Inmueble update, Runnable onSuccess, Runnable onFailure) {
+        ApiClient.getApi().actualizarInmueble(getToken(), update).enqueue(new Callback<Inmueble>() {
             @Override
             public void onResponse(Call<Inmueble> call, Response<Inmueble> response) {
                 if (response.isSuccessful()) {

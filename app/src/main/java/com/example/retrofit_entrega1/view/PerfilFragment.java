@@ -1,13 +1,10 @@
 package com.example.retrofit_entrega1.view;
 
 import android.app.AlertDialog;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -16,46 +13,32 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.retrofit_entrega1.R;
+import com.example.retrofit_entrega1.databinding.FragmentPerfilBinding;
 import com.example.retrofit_entrega1.model.Propietario;
 import com.example.retrofit_entrega1.viewmodel.PerfilViewModel;
 
 public class PerfilFragment extends Fragment {
 
-    private EditText etCodigo, etDni, etNombre, etApellido, etEmail, etTelefono;
-    private Button btnEditarGuardar, btnCambiarClave;
+    private FragmentPerfilBinding binding;
     private boolean enModoEdicion = false;
     private Propietario propietarioActual;
-    private String token;
     private PerfilViewModel viewModel;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_perfil, container, false);
-
-        etCodigo = view.findViewById(R.id.etCodigo);
-        etDni = view.findViewById(R.id.etDni);
-        etNombre = view.findViewById(R.id.etNombre);
-        etApellido = view.findViewById(R.id.etApellido);
-        etEmail = view.findViewById(R.id.etEmail);
-        etTelefono = view.findViewById(R.id.etTelefono);
-        btnEditarGuardar = view.findViewById(R.id.btnEditarGuardar);
-        btnCambiarClave = view.findViewById(R.id.btnCambiarClave);
-
-        SharedPreferences sp = requireActivity().getSharedPreferences("token.xml", Context.MODE_PRIVATE);
-        token = sp.getString("token", "");
+        binding = FragmentPerfilBinding.inflate(inflater, container, false);
 
         viewModel = new ViewModelProvider(this).get(PerfilViewModel.class);
 
         viewModel.getPerfil().observe(getViewLifecycleOwner(), propietario -> {
             propietarioActual = propietario;
-            etCodigo.setText(String.valueOf(propietario.getIdPropietario()));
-            etDni.setText(propietario.getDni());
-            etNombre.setText(propietario.getNombre());
-            etApellido.setText(propietario.getApellido());
-            etEmail.setText(propietario.getEmail());
-            etTelefono.setText(propietario.getTelefono());
+            binding.etCodigo.setText(String.valueOf(propietario.getIdPropietario()));
+            binding.etDni.setText(propietario.getDni());
+            binding.etNombre.setText(propietario.getNombre());
+            binding.etApellido.setText(propietario.getApellido());
+            binding.etEmail.setText(propietario.getEmail());
+            binding.etTelefono.setText(propietario.getTelefono());
             habilitar(false);
         });
 
@@ -63,9 +46,9 @@ public class PerfilFragment extends Fragment {
             Toast.makeText(getContext(), mensaje, Toast.LENGTH_SHORT).show();
         });
 
-        viewModel.obtenerPerfil(token);
+        viewModel.obtenerPerfil();
 
-        btnEditarGuardar.setOnClickListener(v -> {
+        binding.btnEditarGuardar.setOnClickListener(v -> {
             if (!enModoEdicion) {
                 habilitar(true);
             } else {
@@ -73,28 +56,28 @@ public class PerfilFragment extends Fragment {
             }
         });
 
-        btnCambiarClave.setOnClickListener(v -> mostrarDialogoCambioClave());
+        binding.btnCambiarClave.setOnClickListener(v -> mostrarDialogoCambioClave());
 
-        return view;
+        return binding.getRoot();
     }
 
     private void habilitar(boolean habilitar) {
         enModoEdicion = habilitar;
-        etDni.setEnabled(habilitar);
-        etNombre.setEnabled(habilitar);
-        etApellido.setEnabled(habilitar);
-        etEmail.setEnabled(habilitar);
-        etTelefono.setEnabled(habilitar);
-        btnEditarGuardar.setText(habilitar ? "GUARDAR" : "EDITAR MIS DATOS");
+        binding.etDni.setEnabled(habilitar);
+        binding.etNombre.setEnabled(habilitar);
+        binding.etApellido.setEnabled(habilitar);
+        binding.etEmail.setEnabled(habilitar);
+        binding.etTelefono.setEnabled(habilitar);
+        binding.btnEditarGuardar.setText(habilitar ? "GUARDAR" : "EDITAR MIS DATOS");
     }
 
     private void guardarDatos() {
-        propietarioActual.setDni(etDni.getText().toString());
-        propietarioActual.setNombre(etNombre.getText().toString());
-        propietarioActual.setApellido(etApellido.getText().toString());
-        propietarioActual.setEmail(etEmail.getText().toString());
-        propietarioActual.setTelefono(etTelefono.getText().toString());
-        viewModel.actualizarPerfil(token, propietarioActual);
+        propietarioActual.setDni(binding.etDni.getText().toString());
+        propietarioActual.setNombre(binding.etNombre.getText().toString());
+        propietarioActual.setApellido(binding.etApellido.getText().toString());
+        propietarioActual.setEmail(binding.etEmail.getText().toString());
+        propietarioActual.setTelefono(binding.etTelefono.getText().toString());
+        viewModel.actualizarPerfil(propietarioActual);
     }
 
     private void mostrarDialogoCambioClave() {
@@ -118,9 +101,15 @@ public class PerfilFragment extends Fragment {
         builder.setPositiveButton("CAMBIAR", (dialog, which) -> {
             String actual = etActual.getText().toString();
             String nueva = etNueva.getText().toString();
-            viewModel.cambiarPassword(token, actual, nueva);
+            viewModel.cambiarPassword(actual, nueva);
         });
         builder.setNegativeButton("CANCELAR", (dialog, which) -> dialog.cancel());
         builder.show();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

@@ -1,8 +1,13 @@
 package com.example.retrofit_entrega1.viewmodel;
 
+import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.example.retrofit_entrega1.api.ApiClient;
 import com.example.retrofit_entrega1.model.Contrato;
@@ -18,13 +23,17 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ContratosViewModel extends ViewModel {
+public class ContratosViewModel extends AndroidViewModel {
 
     private MutableLiveData<List<Inmueble>> alquiladosLiveData = new MutableLiveData<>();
     private MutableLiveData<Contrato> contratoLiveData = new MutableLiveData<>();
     private MutableLiveData<List<Pago>> pagosLiveData = new MutableLiveData<>();
     private MutableLiveData<String> mensajeToast = new MutableLiveData<>();
     private List<Contrato> contratosCache = new ArrayList<>();
+
+    public ContratosViewModel(@NonNull Application application) {
+        super(application);
+    }
 
     public LiveData<List<Inmueble>> getAlquilados() {
         return alquiladosLiveData;
@@ -42,8 +51,13 @@ public class ContratosViewModel extends ViewModel {
         return mensajeToast;
     }
 
-    public void cargarAlquilados(String token) {
-        ApiClient.getApi().obtenerContratos(token).enqueue(new Callback<List<Contrato>>() {
+    private String getToken() {
+        SharedPreferences sp = getApplication().getSharedPreferences("token.xml", Context.MODE_PRIVATE);
+        return sp.getString("token", "");
+    }
+
+    public void cargarAlquilados() {
+        ApiClient.getApi().obtenerContratos(getToken()).enqueue(new Callback<List<Contrato>>() {
             @Override
             public void onResponse(Call<List<Contrato>> call, Response<List<Contrato>> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -67,8 +81,8 @@ public class ContratosViewModel extends ViewModel {
         });
     }
 
-    public void cargarPagos(String token, int idContrato) {
-        ApiClient.getApi().obtenerPagos(token, idContrato).enqueue(new Callback<List<Pago>>() {
+    public void cargarPagos(int idContrato) {
+        ApiClient.getApi().obtenerPagos(getToken(), idContrato).enqueue(new Callback<List<Pago>>() {
             @Override
             public void onResponse(Call<List<Pago>> call, Response<List<Pago>> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -85,8 +99,8 @@ public class ContratosViewModel extends ViewModel {
         });
     }
 
-    public void cargarContratoPorInmueble(String token, int idInmueble) {
-        ApiClient.getApi().obtenerContratos(token).enqueue(new Callback<List<Contrato>>() {
+    public void cargarContratoPorInmueble(int idInmueble) {
+        ApiClient.getApi().obtenerContratos(getToken()).enqueue(new Callback<List<Contrato>>() {
             @Override
             public void onResponse(Call<List<Contrato>> call, Response<List<Contrato>> response) {
                 if (response.isSuccessful() && response.body() != null) {

@@ -1,8 +1,13 @@
 package com.example.retrofit_entrega1.viewmodel;
 
+import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.example.retrofit_entrega1.api.ApiClient;
 
@@ -10,17 +15,26 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginViewModel extends ViewModel {
+public class LoginViewModel extends AndroidViewModel {
 
-    private MutableLiveData<String> tokenLiveData = new MutableLiveData<>();
+    private MutableLiveData<Boolean> loginExitoso = new MutableLiveData<>();
     private MutableLiveData<String> mensajeToast = new MutableLiveData<>();
 
-    public LiveData<String> getToken() {
-        return tokenLiveData;
+    public LoginViewModel(@NonNull Application application) {
+        super(application);
+    }
+
+    public LiveData<Boolean> getLoginExitoso() {
+        return loginExitoso;
     }
 
     public LiveData<String> getMensajeToast() {
         return mensajeToast;
+    }
+
+    private void guardarToken(String token) {
+        SharedPreferences sp = getApplication().getSharedPreferences("token.xml", Context.MODE_PRIVATE);
+        sp.edit().putString("token", "Bearer " + token).apply();
     }
 
     public void login(String usuario, String clave) {
@@ -28,7 +42,8 @@ public class LoginViewModel extends ViewModel {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    tokenLiveData.setValue(response.body());
+                    guardarToken(response.body());
+                    loginExitoso.setValue(true);
                 } else {
                     mensajeToast.setValue("Credenciales incorrectas");
                 }

@@ -2,7 +2,6 @@ package com.example.retrofit_entrega1.view;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -39,11 +38,11 @@ public class LoginActivity extends AppCompatActivity implements SensorEventListe
 
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 
-        viewModel.getToken().observe(this, token -> {
-            SharedPreferences sp = getSharedPreferences("token.xml", MODE_PRIVATE);
-            sp.edit().putString("token", "Bearer " + token).apply();
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            finish();
+        viewModel.getLoginExitoso().observe(this, exitoso -> {
+            if (exitoso) {
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                finish();
+            }
         });
 
         viewModel.getMensajeToast().observe(this, mensaje -> {

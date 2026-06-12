@@ -1,9 +1,7 @@
 package com.example.retrofit_entrega1.view;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,16 +9,23 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import com.example.retrofit_entrega1.R;
+import com.example.retrofit_entrega1.databinding.FragmentLogoutBinding;
+import com.example.retrofit_entrega1.viewmodel.LogoutViewModel;
 
 public class LogoutFragment extends Fragment {
+
+    private FragmentLogoutBinding binding;
+    private LogoutViewModel viewModel;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_logout, container, false);
+        binding = FragmentLogoutBinding.inflate(inflater, container, false);
+        viewModel = new ViewModelProvider(this).get(LogoutViewModel.class);
+        return binding.getRoot();
     }
 
     @Override
@@ -35,8 +40,7 @@ public class LogoutFragment extends Fragment {
                 .setMessage("¿Está seguro de que desea cerrar la sesión?")
                 .setCancelable(false)
                 .setPositiveButton("ACEPTAR", (dialog, which) -> {
-                    SharedPreferences sp = requireActivity().getSharedPreferences("token.xml", Context.MODE_PRIVATE);
-                    sp.edit().clear().apply();
+                    viewModel.cerrarSesion();
                     Intent intent = new Intent(requireActivity(), LoginActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
@@ -47,5 +51,11 @@ public class LogoutFragment extends Fragment {
                     Navigation.findNavController(requireView()).navigateUp();
                 })
                 .show();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }
